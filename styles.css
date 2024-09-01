@@ -70,3 +70,43 @@ body {
   min-height: 100vh;
   background-color: #333;
 }
+
+.product-slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.slider-container {
+  display: flex;
+  align-items: center;
+}
+.slider {
+  display: flex;
+  overflow: hidden;
+  width: 440px;
+}
+.slide {
+  min-width: 210px;
+  margin-right: 20px;
+  text-align: center;
+}
+.slide img {
+  width: 210px;
+  height: 210px;
+  object-fit: cover;
+}
+.quantity-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.quantity-counter button {
+  width: 30px;
+  height: 30px;
+}
+.qty_text {
+  width: 40px;
+  text-align: center;
+  margin: 0 5px;
+}
