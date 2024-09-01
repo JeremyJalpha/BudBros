@@ -3,12 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BudBros</title>
+    <!-- Begin Page Attributes -->
+    <meta name="description" content="Your page description here">
+    <meta property="og:title" content="Home">
+    <meta property="og:description" content="Your page description here">
+    <meta property="og:image" content="image.jpg">
+    <meta property="og:url" content="https://www.example.com">
+    <!-- End Page Attributes -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="scripts.js" defer></script>
+    <title>BudBros</title>
 </head>
 
-<body>
+<body class="custom-background">
     <header>
         <h1>Welcome to BudBros</h1>
         <nav>
@@ -23,41 +32,18 @@
     <main>
         <section id="home">
             <h2>Home</h2>
-            <p>Content for the home section goes here.</p>
+            <img src="Example_1.png" width="363" height="482" alt=""/>
+            <div class="turquoise-bean">
+                <p>Content for the home section goes here.</p>
+            </div>
+            <div class="silver-bar-container">
+                <canvas id="silverBarCanvas"></canvas>
+            </div>
         </section>
 
         <section id="products">
             <h2>Products</h2>
-            <div class="product-slider">
-                <div class="slider-container">
-                    <button class="prev">Previous</button>
-                    <div class="slider">
-                        <div class="slide">
-                            <img src="https://static.wixstatic.com/media/22e53e_2fee033b2eca46cab4eec7fa74e99c31~mv2.jpg" alt="Product 1">
-                            <p>I'm a product</p>
-                            <p>R85,00</p>
-                            <div class="quantity-counter">
-                                <button class="decrement">-</button>
-                                <input type="text" value="1" class="qty_text" readonly>
-                                <button class="increment">+</button>
-                            </div>
-                            <button>Add to Cart</button>
-                        </div>
-                        <div class="slide">
-                            <img src="https://static.wixstatic.com/media/22e53e_422c96a46cfd4873b36279bc94bf5bd4~mv2.jpg" alt="Product 2">
-                            <p>I'm a product</p>
-                            <p>R85,00</p>
-                            <div class="quantity-counter">
-                                <button class="decrement">-</button>
-                                <input type="text" value="1" class="qty_text" readonly>
-                                <button class="increment">+</button>
-                            </div>
-                            <button>Add to Cart</button>
-                        </div>
-                    </div>
-                    <button class="next">Next</button>
-                </div>
-            </div>
+            <p>Content for the about section goes here.</p>
         </section>
 
         <section id="contact">
@@ -67,82 +53,7 @@
     </main>
 
     <footer>
-        <p>© 2024 BudBros. All rights reserved.</p>
+        <p>© 2024 Your Website Name. All rights reserved.</p>
     </footer>
-
-    <style>
-        .product-slider {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .slider-container {
-            display: flex;
-            align-items: center;
-        }
-        .slider {
-            display: flex;
-            overflow: hidden;
-            width: 440px;
-        }
-        .slide {
-            min-width: 210px;
-            margin-right: 20px;
-            text-align: center;
-        }
-        .slide img {
-            width: 210px;
-            height: 210px;
-            object-fit: cover;
-        }
-        .quantity-counter {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .quantity-counter button {
-            width: 30px;
-            height: 30px;
-        }
-        .qty_text {
-            width: 40px;
-            text-align: center;
-            margin: 0 5px;
-        }
-    </style>
-
-    <script>
-        const prevButton = document.querySelector('.prev');
-        const nextButton = document.querySelector('.next');
-        const slider = document.querySelector('.slider');
-        let scrollAmount = 0;
-
-        nextButton.addEventListener('click', () => {
-            slider.scrollBy({ left: 230, behavior: 'smooth' });
-            scrollAmount += 230;
-        });
-
-        prevButton.addEventListener('click', () => {
-            slider.scrollBy({ left: -230, behavior: 'smooth' });
-            scrollAmount -= 230;
-        });
-
-        document.querySelectorAll('.increment').forEach(button => {
-            button.addEventListener('click', () => {
-                const qtyText = button.previousElementSibling;
-                qtyText.value = parseInt(qtyText.value) + 1;
-            });
-        });
-
-        document.querySelectorAll('.decrement').forEach(button => {
-            button.addEventListener('click', () => {
-                const qtyText = button.nextElementSibling;
-                if (parseInt(qtyText.value) > 1) {
-                    qtyText.value = parseInt(qtyText.value) - 1;
-                }
-            });
-        });
-    </script>
 </body>
 </html>
