@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Other meta tags and stylesheets go here -->
+    <title>Your Page Title</title>
+    <style>
+      .menu-item-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .menu-item {
+        width: 30%;
+        margin-bottom: 1em;
+        text-align: center;
+        padding: 1em;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+      }
+      .menu-item h3 {
+        margin-bottom: 0.5em;
+      }
+      .menu-item p {
+        margin-bottom: 0.5em;
+      }
+      #summary {
+        padding: 1em;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        margin-top: 1em;
+      }
+      .menu-image {
+        height: 180px;
+        width: 90px;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Starters</h2>
+    <div class="menu-item-container">
+      <div class="menu-item">
+        <img src="placeholder.jpg" alt="Menu Item Placeholder" class="menu-image">
+        <h3>Denitrified fertilizer</h3>
+        <p>5g @ R110 p.g.</p>
+        <p>10g @ R90 p.g.</p>
+        <label id="quantity-label">Quantity:</label>
+        <input type="number" id="Denitrified-fertilizer-quantity" aria-labelledby="quantity-label" value="1" min="1">
+        <button onclick="appendToSummary('Denitrified fertilizer', document.getElementById('Denitrified-fertilizer-quantity').value)">Add to Order</button>
+      </div>
+      <div class="menu-item">
+        <img src="placeholder.jpg" alt="Menu Item Placeholder" class="menu-image">
+        <h3>Dehydrogenated water</h3>
+        <p>5g @ R140 p.g.</p>
+        <p>10g @ R120 p.g.</p>
+        <label id="quantity-label">Quantity:</label>
+        <input type="number" id="Dehydrogenated-water-quantity" aria-labelledby="quantity-label" value="1" min="1">
+        <button onclick="appendToSummary('Dehydrogenated water', document.getElementById('Dehydrogenated-water-quantity').value)">Add to Order</button>
+      </div>
+		<div class="menu-item">
+			<img src="placeholder.jpg" alt="Menu Item Placeholder" class="menu-image">
+			<h3>Decarbonized soil</h3>
+			<p>5g @ R150 p.g.</p>
+			<p>10g @ R130 p.g.</p>
+			<label id="quantity-label">Quantity:</label>
+			<input type="number" id="Decarbonized-soil-quantity" aria-labelledby="quantity-label" value="1" min="1">
+			<button onclick="appendToSummary('Decarbonized soil', document.getElementById('Decarbonized-soil-quantity').value)">Add to Order</button>
+		</div>
+		<div class="menu-item">
+			<img src="placeholder.jpg" alt="Menu Item Placeholder" class="menu-image">
+			<h3>Space bud treats</h3>
+			<form>
+				<input type="checkbox" id="space-bud-treats-10-pack" name="pack" value="10 pack" data-type="or">
+				<label for="space-bud-treats-10-pack">10 pack</label><br>
+				<input type="checkbox" id="space-bud-treats-5-pack" name="pack" value="5 pack" data-type="and">
+				<label for="space-bud-treats-5-pack">5 pack</label>
+			</form>
+			<label id="quantity-label">Quantity:</label>
+			<input type="number" id="Space-bud-treats-quantity" aria-labelledby="quantity-label" value="1" min="1">
+			<button onclick="appendToSummary('Space bud treats', document.getElementById('Space-bud-treats-quantity').value)">Add to Order</button>
+		</div>
+    </div>
+    <div id="summary">
+      <h3>Order Summary</h3>
+      <ul id="summary-list"></ul>
+    </div>
+    <script>
+      function appendToSummary(item, quantity) {
+          const list = document.querySelector("#summary-list");
+          const selectedOptions = Array.from(document.querySelectorAll('input[name="pack"]:checked')).map(option => ({
+              value: option.value,
+              type: option.dataset.type
+          }));
+
+          // Find the main item entry
+          let mainItem = Array.from(list.children).find((li) => li.dataset.item === item);
+
+          if (!mainItem) {
+              // Create main item entry if it doesn't exist
+              mainItem = document.createElement("li");
+              mainItem.dataset.item = item;
+              mainItem.textContent = `${item}`;
+              list.appendChild(mainItem);
+          }
+
+          // Remove main item's remove button if it has sub-items
+          if (mainItem.querySelector('button')) {
+              mainItem.removeChild(mainItem.querySelector('button'));
+          }
+
+          // Add or update sub-entries for "and" options
+          selectedOptions.forEach(option => {
+              let subItem = Array.from(mainItem.children).find((li) => li.dataset.option === option.value);
+
+              if (subItem) {
+                  // Update quantity of existing sub-item
+                  const existingQuantity = parseInt(subItem.dataset.quantity, 10);
+                  const newQuantity = existingQuantity + parseInt(quantity, 10);
+                  subItem.dataset.quantity = newQuantity;
+                  subItem.textContent = `${option.value} (Quantity: ${newQuantity})`;
+              } else {
+                  // Create new sub-item
+                  subItem = document.createElement("li");
+                  subItem.dataset.option = option.value;
+                  subItem.dataset.quantity = quantity;
+                  subItem.textContent = `${option.value} (Quantity: ${quantity})`;
+
+                  // Add remove button to sub-item
+                  const subRemoveButton = document.createElement("button");
+                  subRemoveButton.textContent = "remove from order";
+                  subRemoveButton.onclick = function() {
+                      let currentQuantity = parseInt(subItem.dataset.quantity, 10);
+                      if (currentQuantity > 1) {
+                          subItem.dataset.quantity = --currentQuantity;
+                          //subItem.textContent = `${option.value} (Quantity: ${currentQuantity})`;
+                      } else {
+                          mainItem.removeChild(subItem);
+                          if (mainItem.children.length === 0) {
+                              list.removeChild(mainItem);
+                          }
+                      }
+                  };
+                  subItem.appendChild(subRemoveButton);
+
+                  mainItem.appendChild(subItem);
+              }
+          });
+
+          // If no sub-items are selected, update or create the main item
+          if (selectedOptions.length === 0) {
+              if (mainItem.querySelector('.quantity')) {
+                  // Update quantity of existing main item
+                  const existingQuantity = parseInt(mainItem.dataset.quantity, 10);
+                  const newQuantity = existingQuantity + parseInt(quantity, 10);
+                  mainItem.dataset.quantity = newQuantity;
+                  mainItem.querySelector('.quantity').textContent = `Quantity: ${newQuantity}`;
+              } else {
+                  // Create new main item with remove button
+                  mainItem.dataset.quantity = quantity;
+                  
+                  const textSpan = document.createElement("span");
+                  textSpan.textContent = `${item} `;
+                  
+                  const quantitySpan = document.createElement("span");
+                  quantitySpan.className = 'quantity';
+                  quantitySpan.textContent = `Quantity: ${quantity}`;
+                  
+                  const removeButton = document.createElement("button");
+                  removeButton.textContent = "remove from order";
+                  removeButton.onclick = function() {
+                      let currentQuantity = parseInt(mainItem.dataset.quantity, 10);
+                      if (currentQuantity > 1) {
+                          mainItem.dataset.quantity = --currentQuantity;
+                          quantitySpan.textContent = `Quantity: ${currentQuantity}`;
+                      } else {
+                          list.removeChild(mainItem);
+                      }
+                  };
+                  
+                  mainItem.appendChild(textSpan);
+                  mainItem.appendChild(quantitySpan);
+                  mainItem.appendChild(removeButton);
+              }
+          }
+      }
+    </script>
+  </body>
+</html>
